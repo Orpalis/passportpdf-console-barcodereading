@@ -55,7 +55,38 @@ namespace BarcodeExtraction
             }
             else
             {
-                Console.WriteLine("Document format is not supported");
+                var pdfImportSupportedFormats = new PDFApi().GetPDFImportSupportedFileExtensionsAsync().Result;
+
+                if (pdfImportSupportedFormats.Value.Contains(document.DocumentFormat.ToString()))
+                {
+                    PDFApi pdfApi = new PDFApi();
+
+                    var convertedDocument = pdfApi.LoadDocumentAsPDFFromHTTPAsync(new PassportPDF.Model.PdfLoadDocumentFromHTTPParameters(uri)).Result;
+
+                    if(convertedDocument != null)
+                    {
+                        var barcodes = pdfApi.ReadBarcodesAsync(new PassportPDF.Model.PdfReadBarcodesParameters(convertedDocument.FileId, "*")).Result;
+
+                        foreach (var barcode in barcodes.Barcodes)
+                        {
+                            Console.WriteLine("Barcode type : {0}", barcode.Type);
+                            Console.WriteLine("Barcode symbology : {0}", barcode.Barcode1DSymbology);
+                            Console.WriteLine("X_left : {0}", barcode.X1);
+                            Console.WriteLine("Y_top : {0}", barcode.Y1);
+                            Console.WriteLine("X_right : {0}", barcode.X3);
+                            Console.WriteLine("Y_down : {0}", barcode.Y3);
+                            Console.WriteLine("Barcode data : {0}", barcode.Data);
+                            Console.WriteLine("-------------------");
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Document format not supported!");
+                }
+                
+
             }
 
 
