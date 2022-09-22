@@ -9,7 +9,7 @@ namespace BarcodeExtraction
     {
         static void Main(string[] args)
         {
-            GlobalConfiguration.ApiKey = "E8013855-55F7-44E4-AD0A-AD298CB10120";
+            GlobalConfiguration.ApiKey = "YOUR-PASSPORT-CODE";
             DocumentApi api = new();
 
             var uri = "https://passportpdfapi.com/test/invoice_with_barcode.pdf";
