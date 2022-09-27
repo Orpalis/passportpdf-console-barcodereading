@@ -7,6 +7,21 @@ namespace BarcodeExtraction
 
     public class BarcodeExtractor
     {
+        static void displayBarcodesInfo(PassportPDF.Model.ReadBarcodesResponse barcodes)
+        {
+            foreach (var barcode in barcodes.Barcodes)
+            {
+                Console.WriteLine("Barcode type : {0}", barcode.Type);
+                Console.WriteLine("Barcode symbology : {0}", barcode.Barcode1DSymbology);
+                Console.WriteLine("X_left : {0}", barcode.X1);
+                Console.WriteLine("Y_top : {0}", barcode.Y1);
+                Console.WriteLine("X_right : {0}", barcode.X3);
+                Console.WriteLine("Y_down : {0}", barcode.Y3);
+                Console.WriteLine("Barcode data : {0}", barcode.Data);
+                Console.WriteLine("-------------------");
+            }
+        }
+
         static void Main(string[] args)
         {
             GlobalConfiguration.ApiKey = "YOUR-PASSPORT-CODE";
@@ -23,17 +38,7 @@ namespace BarcodeExtraction
 
                 var barcodes = imageApi.ImageReadBarcodesAsync(new PassportPDF.Model.ImageReadBarcodesParameters(document.FileId, "*")).Result;
 
-                foreach (var barcode in barcodes.Barcodes)
-                {
-                    Console.WriteLine("Barcode type : {0}", barcode.Type);
-                    Console.WriteLine("Barcode symbology : {0}", barcode.Barcode1DSymbology);
-                    Console.WriteLine("X_left : {0}", barcode.X1);
-                    Console.WriteLine("Y_top : {0}", barcode.Y1);
-                    Console.WriteLine("X_right : {0}", barcode.X3);
-                    Console.WriteLine("Y_down : {0}", barcode.Y3);
-                    Console.WriteLine("Barcode data : {0}", barcode.Data);
-                    Console.WriteLine("-------------------");
-                }
+                displayBarcodesInfo(barcodes);
             }
             else if (document.DocumentFormat == PassportPDF.Model.DocumentFormat.PDF)
             {
@@ -41,17 +46,7 @@ namespace BarcodeExtraction
 
                 var barcodes = pdfApi.ReadBarcodesAsync(new PassportPDF.Model.PdfReadBarcodesParameters(document.FileId, "*")).Result;
 
-                foreach (var barcode in barcodes.Barcodes)
-                {
-                    Console.WriteLine("Barcode type : {0}", barcode.Type);
-                    Console.WriteLine("Barcode symbology : {0}", barcode.Barcode1DSymbology);
-                    Console.WriteLine("X_left : {0}", barcode.X1);
-                    Console.WriteLine("Y_top : {0}", barcode.Y1);
-                    Console.WriteLine("X_right : {0}", barcode.X3);
-                    Console.WriteLine("Y_down : {0}", barcode.Y3);
-                    Console.WriteLine("Barcode data : {0}", barcode.Data);
-                    Console.WriteLine("-------------------");
-                }
+                displayBarcodesInfo(barcodes);
             }
             else
             {
@@ -67,17 +62,7 @@ namespace BarcodeExtraction
                     {
                         var barcodes = pdfApi.ReadBarcodesAsync(new PassportPDF.Model.PdfReadBarcodesParameters(convertedDocument.FileId, "*")).Result;
 
-                        foreach (var barcode in barcodes.Barcodes)
-                        {
-                            Console.WriteLine("Barcode type : {0}", barcode.Type);
-                            Console.WriteLine("Barcode symbology : {0}", barcode.Barcode1DSymbology);
-                            Console.WriteLine("X_left : {0}", barcode.X1);
-                            Console.WriteLine("Y_top : {0}", barcode.Y1);
-                            Console.WriteLine("X_right : {0}", barcode.X3);
-                            Console.WriteLine("Y_down : {0}", barcode.Y3);
-                            Console.WriteLine("Barcode data : {0}", barcode.Data);
-                            Console.WriteLine("-------------------");
-                        }
+                        displayBarcodesInfo(barcodes);
                     }
                     
                 }
